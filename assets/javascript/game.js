@@ -24,8 +24,10 @@ guessesLeftText.textContent = "Guess left: " + guesses;
 guessesText.textContent = "Letters guessed: ";
 
 document.onkeyup = function(event) {
-    var userGuess = event.key.toLowerCase();
-    console.log(userGuess);
+    if (event.keyCode >= 65 && event.keyCode <= 90) {
+        var userGuess = event.key.toLowerCase();
+        console.log(userGuess);
+    }
 
     if ((userGuess === computerGuess)) {
         wins++;
