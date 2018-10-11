@@ -15,55 +15,47 @@ var guessesLeftText = document.getElementById("guesses-left");
 var guessesText = document.getElementById("guesses");
 
 //gets computer to make a random choice
-var computerGuess = computerChoices[Math.floor(Math.random() * computerChoices.length)];
-console.log(computerGuess);
+var computerGuess; 
 
-winsText.textContent = "Wins: " + wins;
-lossesText.textContent = "Losses: " + losses;
-guessesLeftText.textContent = "Guess left: " + guesses;
-guessesText.textContent = "Letters guessed: ";
+function newRound() {
+    guesses = 10;
+    alreadyGuessed = [];
+    computerGuess = computerChoices[Math.floor(Math.random() * computerChoices.length)];
+    console.log(computerGuess);
+    winsText.textContent = "Wins: " + wins;
+    lossesText.textContent = "Losses: " + losses;
+    guessesLeftText.textContent = "Guess left: " + guesses;
+    guessesText.textContent = "Letters guessed: ";
+}
 
+newRound();
 document.onkeyup = function(event) {
-    if (event.keyCode >= 65 && event.keyCode <= 90) {
-        var userGuess = event.key.toLowerCase();
-        console.log(userGuess);
-    }
+    var userGuess = event.key.toLowerCase();
+    if (event.keyCode >= 65 && event.keyCode <= 90 && alreadyGuessed.indexOf(userGuess) == -1) {
+        
+        if ((userGuess === computerGuess)) {
+            wins++;
+            alert("You got it!");
+            newRound();
 
-    if ((userGuess === computerGuess)) {
-        wins++;
-        alert("You got it!");
-        //gets computer to make a random choice
-        computerGuess = computerChoices[Math.floor(Math.random() * computerChoices.length)];
-        console.log(computerGuess);
-        guesses = 10;
-        alreadyGuessed = [];
-    } else {
-        guesses--;
-        alreadyGuessed.push(userGuess);
-        console.log(alreadyGuessed);
-    }
-
+        } else {
+            guesses--;
+            alreadyGuessed.push(userGuess);
+            console.log(alreadyGuessed);
+        }    
         winsText.textContent = "Wins: " + wins;
         lossesText.textContent = "Losses: " + losses;
         guessesLeftText.textContent = "Guess left: " + guesses;
         guessesText.textContent = "Letters guessed: " + alreadyGuessed;
-
-    if (guesses === 0) {
-        losses++;
-        alert("Sorry, try again!");
-        
-        // gets computer to make a random choice again
-        computerGuess = computerChoices[Math.floor(Math.random() * computerChoices.length)];
-        console.log(computerGuess);
-        guesses = 10;
-        alreadyGuessed = [];
-        winsText.textContent = "Wins: " + wins;
-        lossesText.textContent = "Losses: " + losses;
-        guessesLeftText.textContent = "Guess left: " + guesses;
-        guessesText.textContent = "Letters guessed: ";
-
+    
+        if (guesses === 0) {
+            losses++;
+            alert("Sorry, try again!");
+            newRound();            
+        }
+    } else if (alreadyGuessed.indexOf(userGuess) > -1) {
+        alert("You've already guessed that letter. Try a different one.");
+    } else {
+        console.log("Please type in a letter");
     }
-
-
-
 }  
